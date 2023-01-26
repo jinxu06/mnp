@@ -1,0 +1,42 @@
+defaults:
+  - _self_
+  - data: gp
+  - model: dfflow
+  - override hydra/job_logging: colorlog
+
+task: 1
+
+hydra:
+  job:
+    chdir: True
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${hydra.job.name}
+  sweep:
+    dir: outputs/${now:%Y-%m-%d}/${hydra.job.name}
+    subdir: ${hydra.job.override_dirname}
+
+run:
+  exp_name: ${hydra:job.name}
+  version: main
+  logdir: "/tmp/fflow"
+  mode: 'visualize'
+  max_epochs: 200
+  random_seed: 123 
+  restore: False 
+  gpus: "0"
+  device: "gpu"
+  logger: "wandb"
+  wandb_username: ""
+  wandb_project: "fflow"
+
+train:
+  learning_rate: 0.0001
+  weight_decay: 0
+  turn_on_profiler: True
+  gradient_clip_val: 0
+  precision: 32
+  num_data_workers: 0
+  check_val_every_n_epoch: 1
+
+eval:
+  which_set: test
