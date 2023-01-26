@@ -1,0 +1,17 @@
+name: geofluvial
+x_dim: 2
+y_dim: 1
+n_context_points: [3, 256]
+eval_n_context_points: 256 
+n_total_points: 4096 
+random_n_target_points: True
+batch_size: 20
+train_set_size: 20000
+val_set_size: 2000
+test_set_size: 5000
+shuffle: False
+reload: False
+datadir: "/data/ziz/jxu/data/geofluvial-dataset"
+has_context_set: True
+resolution: 64
+data_augmentation: False

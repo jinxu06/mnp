@@ -1,0 +1,19 @@
+name: gp
+x_dim: 1
+y_dim: 1
+x_min_max: [-2.0, 2.0]
+n_context_points: [2, 50]
+eval_n_context_points: 40
+n_total_points: 128
+batch_size: 100
+kernel_type: rbf_noise
+is_vary_kernel_hyp: False
+random_n_target_points: True
+n_sample_samples: 20
+train_set_size: 50000
+val_set_size: 5000
+test_set_size: 5000
+shuffle: False
+datadir: "/data/ziz/not-backed-up/jxu/data"
+reload: False
+has_context_set: True

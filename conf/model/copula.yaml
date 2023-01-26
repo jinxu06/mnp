@@ -1,0 +1,7 @@
+name: "copula"
+kernel_cls: "rbf"
+initial_noise_std: 0.1   
+has_context_set: True
+n_hidden_units: 128
+n_hidden_layers: 2 
+n_flow_layers: 5

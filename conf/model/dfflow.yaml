@@ -1,0 +1,16 @@
+name: "dfflow"
+n_steps: 3
+r_dim: 64
+z_dim: 128
+base_flow: 'rational_quadratic_spline'
+n_hidden_units: 64
+n_hidden_units_cif: 128
+n_hidden_layers: 2      
+n_inds: 0   
+has_context_set: True
+use_fourier_features: False
+num_frequencies: 80
+rff_init_std: 1.0
+training_objective: 'elbo'
+n_latent_samples: 20
+set_encoder_type: 'set_transformer'

@@ -1,0 +1,15 @@
+name: "np"
+r_dim: 64
+z_dim: 128
+n_hidden_units_enc: 64
+n_hidden_units_dec: 128
+n_hidden_layers: 2         
+n_inds: 0
+has_context_set: True
+use_fourier_features: False
+num_frequencies: 80
+rff_init_std: 1.0
+y_sigma_lb: 0.05
+training_objective: 'elbo'
+n_latent_samples: 20
+set_encoder_type: 'set_transformer'

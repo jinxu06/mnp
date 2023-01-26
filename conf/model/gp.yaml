@@ -1,0 +1,5 @@
+name: "gp"
+kernel_cls: "rbf"
+initial_noise_std: 0.01   
+has_context_set: True
+is_oracle: False 
