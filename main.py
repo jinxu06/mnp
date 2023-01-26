@@ -42,19 +42,6 @@ def app(cfg):
   # running mode 
   task_manager = TaskManager(cfg)
 
-  # task_manager.data_module.setup()
-  # dataloader = task_manager.data_module.val_dataloader()
-  # cfg = task_manager.config
-  
-  # quit()
-  
-  # for X_c, Y_c, X_t, Y_t in dataloader:
-    # z_seq = torch.normal(0., 1., size=(5, cfg.data.train_batch_size, cfg.model.z_dim))
-    # elbo = task_manager.model.elbo(X_t, Y_t, X_c, Y_c)
-    # print(elbo)
-    # samples = task_manager.model.sample(X_t, X_c, Y_c)
-    # print(samples)
-    # quit()
   
   if cfg.run.mode == 'train':
     task_manager.run_training()
@@ -64,10 +51,6 @@ def app(cfg):
     task_manager.run_visualization()
   elif cfg.run.mode == 'visualize_data':
     task_manager.run_data_visualization()
-  elif cfg.run.mode == 'debug':
-    task_manager.run_debug()
-  elif cfg.run.mode == 'infer_hyp':
-    task_manager.infer_hyperparameters()
   else:
     raise Exception("unknow running mode {}".format(cfg.run.mode))
   

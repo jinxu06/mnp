@@ -21,13 +21,9 @@ from pytorch_lightning.callbacks.progress.rich_progress import RichProgressBarTh
 from fflow.data_loaders import (
     GaussianProcessDataModule, 
     ConvexFunctionDataModule, 
-    RandomGaussianMixtureCDFDataModule,
     MonotonicFunctionDataModule,
     GeoFluvialDataModule,
-    MNISTDataModule,
-    LearningCurveDataModule,
     StratonovichSDEDataModule,
-    WheelDataModule,
 )
 from fflow.models import (
     DiscreteFunctionFlowModule, 
@@ -36,7 +32,6 @@ from fflow.models import (
     BRUNO,
     GaussianCopulaProcess
 )
-from fflow.utils import infer_optimal_gp_hyperparameters
 
 import matplotlib 
 matplotlib.use('Agg')
@@ -161,36 +156,6 @@ class TaskManager(object):
                                                    shuffle=self.config.data.shuffle, 
                                                    datadir=self.config.data.datadir,
                                                    random_seed=self.config.run.random_seed)
-    elif self.config.data.name == 'cdf':
-      self.data_module = RandomGaussianMixtureCDFDataModule(x_dim=self.config.data.x_dim,
-                                                            y_dim=self.config.data.y_dim,
-                                                            n_context_points=self.config.data.eval_n_context_points if self.config.run.mode == 'visualize' else self.config.data.n_context_points,
-                                                            n_total_points=self.config.data.n_total_points,
-                                                            batch_size=self.config.data.batch_size,
-                                                            x_min_max=self.config.data.x_min_max,
-                                                            poisson_rate=self.config.data.poisson_rate,
-                                                            dirichlet_concentration=self.config.data.dirichlet_concentration,
-                                                            random_n_target_points=self.config.data.random_n_target_points,
-                                                            train_set_size=self.config.data.train_set_size,
-                                                            val_set_size=self.config.data.val_set_size,
-                                                            test_set_size=self.config.data.test_set_size,
-                                                            shuffle=self.config.data.shuffle, 
-                                                            datadir=self.config.data.datadir,
-                                                            random_seed=self.config.run.random_seed)
-    elif self.config.data.name == 'learning_curve':
-      self.data_module = LearningCurveDataModule(x_dim=self.config.data.x_dim,
-                                                            y_dim=self.config.data.y_dim,
-                                                            n_context_points=self.config.data.eval_n_context_points if self.config.run.mode == 'visualize' else self.config.data.n_context_points,
-                                                            n_total_points=self.config.data.n_total_points,
-                                                            batch_size=self.config.data.batch_size,
-                                                            x_min_max=self.config.data.x_min_max,
-                                                            random_n_target_points=self.config.data.random_n_target_points,
-                                                            train_set_size=self.config.data.train_set_size,
-                                                            val_set_size=self.config.data.val_set_size,
-                                                            test_set_size=self.config.data.test_set_size,
-                                                            shuffle=self.config.data.shuffle, 
-                                                            datadir=self.config.data.datadir,
-                                                            random_seed=self.config.run.random_seed)
     elif self.config.data.name == 'sde':
       self.data_module = StratonovichSDEDataModule(x_dim=self.config.data.x_dim,
                                                   y_dim=self.config.data.y_dim,
@@ -233,37 +198,12 @@ class TaskManager(object):
                                                   shuffle=self.config.data.shuffle, 
                                                   datadir=self.config.data.datadir,
                                                   random_seed=self.config.run.random_seed)
-    elif self.config.data.name == 'wheel':
-      self.data_module = WheelDataModule(x_dim=self.config.data.x_dim,
-                                              y_dim=self.config.data.y_dim,
-                                              n_context_points=self.config.data.eval_n_context_points if self.config.run.mode == 'visualize' else self.config.data.n_context_points,
-                                              n_total_points=self.config.data.n_total_points,
-                                              batch_size=self.config.data.batch_size,
-                                              random_n_target_points=self.config.data.random_n_target_points,
-                                              train_set_size=self.config.data.train_set_size,
-                                              val_set_size=self.config.data.val_set_size,
-                                              test_set_size=self.config.data.test_set_size,
-                                              shuffle=self.config.data.shuffle, 
-                                              datadir=self.config.data.datadir,
-                                              random_seed=self.config.run.random_seed)
     elif self.config.data.name == 'geofluvial':
       self.config.data.n_total_points = self.config.data.resolution ** 2
       self.data_module = GeoFluvialDataModule(n_context_points=self.config.data.eval_n_context_points if self.config.run.mode == 'visualize' else self.config.data.n_context_points,
                                               n_total_points=self.config.data.n_total_points,
                                               batch_size=self.config.data.batch_size,
                                               data_augmentation=self.config.data.data_augmentation,
-                                              random_n_target_points=self.config.data.random_n_target_points,
-                                              train_set_size=self.config.data.train_set_size,
-                                              val_set_size=self.config.data.val_set_size,
-                                              test_set_size=self.config.data.test_set_size,
-                                              resolution=self.config.data.resolution,
-                                              shuffle=self.config.data.shuffle, 
-                                              datadir=self.config.data.datadir,
-                                              random_seed=self.config.run.random_seed)
-    elif self.config.data.name == 'mnist':
-      self.data_module = MNISTDataModule(n_context_points=self.config.data.eval_n_context_points if self.config.run.mode == 'visualize' else self.config.data.n_context_points,
-                                              n_total_points=self.config.data.n_total_points,
-                                              batch_size=self.config.data.batch_size,
                                               random_n_target_points=self.config.data.random_n_target_points,
                                               train_set_size=self.config.data.train_set_size,
                                               val_set_size=self.config.data.val_set_size,
@@ -334,11 +274,6 @@ class TaskManager(object):
                                    initial_noise_std=self.config.model.initial_noise_std,
                                    kernel_cls=self.config.model.kernel_cls,
                                    optim_lr=self.config.train.learning_rate)
-    elif self.config.model.name == 'bruno':
-      self.model = BRUNO(x_dim=self.config.data.x_dim,
-                         y_dim=self.config.data.y_dim,
-                         batch_size=self.config.data.batch_size,
-                         optim_lr=self.config.train.learning_rate)
     else:
       raise Exception("Unknow model {}".format(self.config.model.name))
   
@@ -392,65 +327,6 @@ class TaskManager(object):
                           save_to="{0}/vis_{1}_{2}".format(self.exp_name, self.config.model.name, k), 
                           resolution=None if 'resolution' not in self.config.data else  self.config.data.resolution)
     
-  def run_debug(self):
-    if os.path.exists(os.path.join(self.config.run.logdir, self.exp_name, "checkpoints/last.ckpt")):
-      self._restore_model()
-    else:
-      logging.info("No checkpoint found, using untrained model")
-    self.data_module.setup()
-    dataloader = self.data_module.vis_dataloader()
-    X_c, Y_c, X_t, Y_t = next(iter(dataloader))
-    
-    index = torch.argwhere(Y_t[0, :, 0] < 0.0)[..., 0]
-    indices = index[torch.randperm(index.shape[0])[:25]].to(self.device)  # index[:25].to(self.device)  #torch.randperm(768)[:25].to(self.device)
-    X_c, Y_c, X_t, Y_t = X_c.to(self.device), Y_c.to(self.device), X_t.to(self.device), Y_t.to(self.device)
-    X_t = torch.index_select(X_t, dim=1, index=indices)
-    Y_t = torch.index_select(Y_t, dim=1, index=indices)
-    self.model.to(self.device)
-    
-    X_t_ff, X_c_ff, Y_c_ff = X_t, X_c, Y_c
-    if self.config.model.use_fourier_features:
-      X_c_ff = self.model.fourier_features(X_c_ff)
-      X_t_ff = self.model.fourier_features(X_t_ff)
-
-    z_seq = self.model.infer_net.sample(X_c_ff, Y_c_ff)
-    # prior = self.infer(X_c, Y_c)
-    # z = self._sample_with_reparameterization(prior)
-    
-    log_probs = []
-    # for i in np.linspace(-0.6, 0.6, num=1001):
-    for i in np.linspace(-1.1, 1.1, num=1001):
-      _Y_t = i * torch.ones_like(Y_t)
-      log_prob = self.model.cond_cif.log_prob(z_seq, X_t_ff, _Y_t, aggregate=False)[0]
-      # log_prob = self.model.cond_cif.log_prob(z, X_t, _Y_t, aggregate=False)[0]
-      log_prob = log_prob.detach().cpu().numpy()
-      log_probs.append(log_prob)
-    log_prob = np.stack(log_probs)
-    
-    log_prob_gt = self.model.cond_cif.log_prob(z_seq, X_t_ff, Y_t, aggregate=False)[0].detach().cpu().numpy()
-    Y_t = Y_t.detach().cpu().numpy()
-    
-    fig = plt.figure(figsize=(5*5,5*5))
-    
-    for i in range(5):
-      for j in range(5):
-        ax = fig.add_subplot(5,5,i*5+j+1)
-        sns.lineplot(x=np.linspace(-1.1, 1.1, num=1001), y=log_prob[:, i*5+j], ax=ax)
-        ax.scatter(x=Y_t[:, i*5+j, 0], y=log_prob_gt[i*5+j])
-        
-    fig.savefig("dfflow_out_geofluvia_negative.png")
-    # quit()
-    
-  def infer_hyperparameters(self):
-    self._restore_model()
-    self.data_module.setup()
-    dataloader = self.data_module.val_dataloader()
-    X_c, Y_c, X_t, Y_t = next(iter(dataloader))
-    logging.info("Infer Hyperparameters ...") 
-    Y_t_pred, _ = self.model(X_t, X_c, Y_c)
-    hyps = infer_optimal_gp_hyperparameters(self.data_module.kernel, X_t, Y_t)
-    for hyp in hyps:
-      logging.info(str(hyp))
   
   def _restore_model(self):
     if self.config.model.name == 'dfflow':
@@ -512,13 +388,7 @@ class TaskManager(object):
                                    batch_size=self.config.data.batch_size,
                                    initial_noise_std=self.config.model.initial_noise_std,
                                    kernel_cls=self.config.model.kernel_cls,
-                                   optim_lr=self.config.train.learning_rate)
-    elif self.config.model.name == 'bruno':
-      self.model = BRUNO.load_from_checkpoint(os.path.join(self.config.run.logdir, self.exp_name, "checkpoints/last.ckpt"), 
-                                   x_dim=self.config.data.x_dim,
-                                   y_dim=self.config.data.y_dim,
-                                   batch_size=self.config.data.batch_size,
-                                   optim_lr=self.config.train.learning_rate)                                            
+                                   optim_lr=self.config.train.learning_rate)                                         
     else:
       raise Exception("Unknow model {}".format(self.config.model.name))
     logging.info("Restore from {}".format(os.path.join(self.config.run.logdir, self.exp_name, "checkpoints/last.ckpt")))

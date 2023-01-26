@@ -11,6 +11,6 @@ train_set_size: 50000
 val_set_size: 5000
 test_set_size: 5000
 shuffle: False
-datadir: "/data/ziz/not-backed-up/jxu/data"
+datadir: "/tmp/data"
 reload: False
 has_context_set: True

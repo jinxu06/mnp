@@ -11,7 +11,7 @@ val_set_size: 2000
 test_set_size: 5000
 shuffle: False
 reload: False
-datadir: "/data/ziz/jxu/data/geofluvial-dataset"
+datadir: "/tmp/data/geofluvial-dataset"
 has_context_set: True
 resolution: 64
 data_augmentation: False
